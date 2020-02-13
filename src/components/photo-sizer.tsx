@@ -4,11 +4,27 @@ export const PhotoSizer: React.FC<{}> = () => {
 
   const [count, change] = React.useState(1)
   const [image, update] = React.useState('')
-  const [gray, addGray] = React.useState('')
+  const [gray, setGray] = React.useState(false)
+  const [blur, setBlur] = React.useState(false)
+  const [queryString, setQuery] = React.useState('')
 
   React.useEffect(() => {
-    update('https://picsum.photos/' + count.toString() + '00' + gray)
-  }, [count, gray])
+    update('https://picsum.photos/' + count.toString() + '00' + queryString)
+  }, [count, queryString])
+
+  const handleQuerySet = (query:string, value: boolean) => {
+    setQuery(query)
+    if (query === '?grayscale') {
+      setGray(value)
+    }
+    else if (query === '?blur'){
+      setBlur(value)
+    }
+    else {
+      setBlur(value)
+      setGray(value)
+    }
+  }
 
   return (
     <React.Fragment>
@@ -23,11 +39,17 @@ export const PhotoSizer: React.FC<{}> = () => {
         }
       }}>Smaller</button>
       <button onClick={() => {
-        gray === '' ? addGray('?grayscale') : addGray('')
+        !gray ?
+          handleQuerySet('?grayscale', true)
+        : handleQuerySet('', false)
       }}>Grayscale</button>
+      <button onClick={() => {
+        !blur ?
+          handleQuerySet('?blur', true)
+        : handleQuerySet('', false)
+      }}>Blur</button>
       <h3>
         {count === 1 ? 'One' : count === 10 ? 'Ten' : count}
-        {gray === '' ? '' : ': [Grayscale]'}
       </h3>
       <img src={image} />
     </React.Fragment>
