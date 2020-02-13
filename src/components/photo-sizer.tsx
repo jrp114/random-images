@@ -14,13 +14,13 @@ export const PhotoSizer: React.FC<{}> = () => {
 
   const handleQuerySet = (query:string, value: boolean) => {
     setQuery(query)
-    if (query === '?grayscale') {
+    if (query.includes('grayscale')) {
       setGray(value)
     }
-    else if (query === '?blur'){
+    if (query.includes('blur')){
       setBlur(value)
     }
-    else {
+    if (query === '') {
       setBlur(value)
       setGray(value)
     }
@@ -39,14 +39,18 @@ export const PhotoSizer: React.FC<{}> = () => {
         }
       }}>Smaller</button>
       <button onClick={() => {
-        !gray ?
-          handleQuerySet('?grayscale', true)
-        : handleQuerySet('', false)
+        !gray && !blur
+          ? handleQuerySet('?grayscale', true)
+            : !gray && blur
+              ? handleQuerySet('?blur&grayscale', true)
+                : handleQuerySet('', false)
       }}>Grayscale</button>
       <button onClick={() => {
-        !blur ?
-          handleQuerySet('?blur', true)
-        : handleQuerySet('', false)
+        !blur && !gray
+          ? handleQuerySet('?blur', true)
+            : !blur && gray
+              ? handleQuerySet('?grayscale&blur', true)
+                : handleQuerySet('', false)
       }}>Blur</button>
       <h3>
         {count === 1 ? 'One' : count === 10 ? 'Ten' : count}
