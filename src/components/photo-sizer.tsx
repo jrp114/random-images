@@ -4,10 +4,11 @@ export const PhotoSizer: React.FC<{}> = () => {
 
   const [count, change] = React.useState(1)
   const [image, update] = React.useState('')
+  const [gray, addGray] = React.useState('')
 
   React.useEffect(() => {
-    update('https://picsum.photos/' + count.toString() + '00')
-  }, [count])
+    update('https://picsum.photos/' + count.toString() + '00' + gray)
+  }, [count, gray])
 
   return (
     <React.Fragment>
@@ -21,7 +22,13 @@ export const PhotoSizer: React.FC<{}> = () => {
           change(count-1)
         }
       }}>Smaller</button>
-      <h3>{count === 1 ? 'One' : count === 10 ? 'Ten' : count}</h3>
+      <button onClick={() => {
+        gray === '' ? addGray('?grayscale') : addGray('')
+      }}>Grayscale</button>
+      <h3>
+        {count === 1 ? 'One' : count === 10 ? 'Ten' : count}
+        {gray === '' ? '' : ': [Grayscale]'}
+      </h3>
       <img src={image} />
     </React.Fragment>
   )
