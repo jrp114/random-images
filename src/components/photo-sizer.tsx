@@ -28,16 +28,23 @@ export const PhotoSizer: React.FC<{}> = () => {
 
   return (
     <React.Fragment>
-      <button onClick={() => {
-        if (count < 10){
-          change(count+1)
-        }
-      }}>Bigger</button>
-      <button onClick={() => {
-        if (count > 1) {
-          change(count-1)
-        }
-      }}>Smaller</button>
+      <div>
+        <button onClick={() => {
+          if (count > 1) {
+            change(count-1)
+          }
+        }}>
+          Smaller
+        </button>
+        <button onClick={() => {
+          if (count < 10){
+            change(count+1)
+          }
+        }}>
+          Bigger
+        </button>
+      </div>
+
       <button onClick={() => {
         !gray && !blur
           ? handleQuerySet('?grayscale', true)
@@ -54,6 +61,15 @@ export const PhotoSizer: React.FC<{}> = () => {
       }}>Blur</button>
       <h3>
         {count === 1 ? 'One' : count === 10 ? 'Ten' : count}
+        {
+          gray && blur
+            ? ': [Grayscaled, Blurred]'
+              : gray && !blur
+                ? ': [Grayscaled]'
+                  : !gray && blur
+                    ? ': [Blurred]'
+                      : ''
+        }
       </h3>
       <img src={image} />
     </React.Fragment>
